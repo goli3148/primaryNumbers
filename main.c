@@ -1,13 +1,33 @@
+//0.421 seconds to find 78,497 prime number out of 1,000,000
+//1.893 seconds to find 664,578 prime numbers out of 10,000,000
+//26.687 seconds to find 5,761,454 prime nubers out of 100,000,000
 #include "stdio.h"
 #include "stdlib.h"
 #include "math.h"
 
 const int min = 4;
-const int max = 1000000;
-const int len = 1000000;
+const int max = 100000010;
+const int len = 100000000;
 
 int index;
 int *primary;
+
+void Show(){
+    int i = 0;
+    for (; i<len; i++){
+        if (primary[i]==1)
+            break;
+        printf("%d:%d\t", i, primary[i]);
+        if (i%10==0)
+            printf("\n");
+    }
+}
+void Show2(){
+    int i = 0;
+    for (; i<len && primary[i] != 1; i++);
+    i--;
+    printf("%d:%d\n", i, primary[i]);
+}
 
 void Initialize(){
     primary = (int*)malloc(len * sizeof(int));
@@ -20,7 +40,7 @@ void Initialize(){
     index = 2;
 }
 
-int Feasible(int num){ //0.421 second to find 78,497 prime number out of 1,000,000
+int Feasible(int num){ 
     int result = sqrt(num), i = 0;
     for (;i<=index && result>=primary[i]; i++){
         if (num % primary[i] == 0)
@@ -40,19 +60,14 @@ void Algorithm(){
             index ++; 
         }
     }
-}
-void Show(){
-    int i = 0;
-    for (; i<len; i++){
-        printf("%d:%d\t", i, primary[i]);
-        if (i%10==0)
-            printf("\n");
-        if (primary[i]==1)
-            break;
+    if (len>10000){
+        Show2();
+        return;
     }
+    Show();
 }
+
 int main(){
     Algorithm();
-    Show();
     return 0;
 }
